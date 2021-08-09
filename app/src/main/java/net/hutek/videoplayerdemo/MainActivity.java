@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.MediaController;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,17 +46,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String strImg = m_fileList.get(position);
-                Toast.makeText(getApplicationContext(), strImg, Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "1");
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(strImg));
-                Log.d(TAG, "URI = " + Uri.parse(strImg));
-                Log.d(TAG, "intent = " + intent);
-                startActivity(intent);
+                m_videoView.setVideoPath(String.valueOf(strImg));    // 선택한 비디오 경로 비디오뷰에 셋
+                m_videoView.start();
+                //intent로 넘겨야할 예정
                 Log.d(TAG, "3");
             }
         });
-
-
     }
 
     public void bt1(View view) {    // 동영상 선택 누르면 실행됨 동영상 고를 갤러리 오픈
@@ -129,47 +123,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        //        ArrayAdapter adapter = (ArrayAdapter) m_list.getAdapter();
-//        // app 수명이 남아있는 동안 어댑터가 읽는 기본 데이터를 변경하는 경우 해당 라인으로 데이터가 변경됨을 알려줘야함
-//        adapter.notifyDataSetChanged();
-        return fileList;
-    }
-
-//    public void getVideoList() {
-//        m_fileList.clear();
-//        m_fileList = new ArrayList();
-//        Uri uri = android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-//        String[] projection = {
-//                MediaStore.MediaColumns.DATA,
-//                MediaStore.MediaColumns.DISPLAY_NAME
-//        };
-//
-//        Cursor cursor = getContentResolver().query(
-//                uri,
-//                projection,
-//                null,
-//                null,
-//                MediaStore.MediaColumns.DATE_ADDED + " desc");
-//
-//        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-//        int columnDisplayname = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME);
-//        int lastIndex;
-//        while (cursor.moveToNext()) {
-//            String absolutePathOfVideo = cursor.getString(columnIndex);
-//            String nameOfFile = cursor.getString(columnDisplayname);
-//            lastIndex = absolutePathOfVideo.lastIndexOf(nameOfFile);
-//            lastIndex = lastIndex >= 0 ? lastIndex : nameOfFile.length() - 1;
-//
-//            if (!TextUtils.isEmpty(absolutePathOfVideo)) { // 일종의 필터
-//                m_fileList.add(absolutePathOfVideo);
-//            }
-//        }
-//
 //        ArrayAdapter adapter = (ArrayAdapter) m_list.getAdapter();
 //        // app 수명이 남아있는 동안 어댑터가 읽는 기본 데이터를 변경하는 경우 해당 라인으로 데이터가 변경됨을 알려줘야함
 //        adapter.notifyDataSetChanged();
-//    }
+//        m_list.setAdapter(adapter);
 
+        return fileList;
+    }
 
     // onPause
     @Override
@@ -184,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        getVideoList();
+        getVideoList();
     }
 
 
